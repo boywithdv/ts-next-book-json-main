@@ -7,7 +7,7 @@
     "start": "node server.js"
   },
   "keywords": [
-    "json-server,heroku, node, REST API"
+    "json-server, node, REST API"
   ],
   "author": "Jesper Orb",
   "license": "ISC",
