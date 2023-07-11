@@ -19,12 +19,6 @@ const authUser = {
 
 server.use(cookieParser());
 server.use(express.json());
-const app = express();
-app.get("/", (req, res) => {
-  res.send("Express on Vercel");
-});
-// Export the Express API
-module.exports = app;
 server.post('/auth/signin', (req, res) => {
   if (
     !(req.body['username'] === 'user' && req.body['password'] === 'password')
