@@ -16,10 +16,5 @@
             "src": "/(.*)",
             "dest": "server.js"
         }
-    ],
-    "functions": [
-        {
-            "timeout": "20"
-        }
     ]
 }
