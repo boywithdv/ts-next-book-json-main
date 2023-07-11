@@ -7,6 +7,8 @@ const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8000;
+const axios = require('axios');
+const cheerio = require('cheerio');
 const authUser = {
   id: '1',
   username: 'taketo',
@@ -77,4 +79,23 @@ server.listen(port, (err) => {
   }
   console.log("Start listening...");
   console.log('http://localhost:' + port);
+});
+const app = express();
+
+app.get('/api/proxy', async (req, res) => {
+  try {
+    const html = await axios.get('https://ts-next-book-json-main.vercel.app/'); // HTMLデータを取得
+
+    // Cheerioを使用してHTMLデータを解析し、必要な情報を抽出
+    const $ = cheerio.load(html.data);
+    const title = $('title').text();
+
+    // 必要な情報をJSON形式に整形
+    const jsonData = { title };
+
+    res.json(jsonData); // JSONデータをクライアントに返す
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
 });
