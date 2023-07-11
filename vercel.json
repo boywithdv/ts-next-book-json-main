@@ -17,9 +17,10 @@
             "dest": "api/server.js"
         }
     ],
-    "functions": [
-        {
-            "timeout": "20"
+    "functions": {
+        "api/server.js": {
+            "memory": 1024,
+            "includeFiles": "db.json"
         }
-    ]
+    }
 }
