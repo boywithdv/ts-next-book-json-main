@@ -11,7 +11,7 @@
             "destination": "api/server.js"
         }
     ],
-    "rewrite": [
+    "rewrites": [
         {
             "source": "/app/(.*)",
             "destination": "/api/proxy"
