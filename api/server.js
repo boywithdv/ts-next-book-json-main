@@ -55,6 +55,7 @@ server.post('/purchases', (req, res) => {
   });
 });
 
+//初期画面描画時に実行される
 server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
