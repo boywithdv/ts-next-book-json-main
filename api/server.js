@@ -22,11 +22,8 @@ server.use(express.json());
 
 server.post('/auth/signin', (req, res) => {
   if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
-    return res.status(401).json({
-      message: 'Username or password are incorrect',
+    return res.status(401).json({message: 'Username or password are incorrect',
     });
-  } else {
-    message:"404のエラーですわ！"
   }
 
   res.cookie('token', 'dummy_token', {
