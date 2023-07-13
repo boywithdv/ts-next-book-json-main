@@ -19,6 +19,7 @@ const authUser = {
 
 server.use(cookieParser());
 server.use(express.json());
+
 server.post('/auth/signin', (req, res) => {
   if (
     !(req.body['username'] === 'user' && req.body['password'] === 'password')
