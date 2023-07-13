@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const server = jsonServer.create();
-const router = jsonServer.router('db.json');
+const router = jsonServer.router('/db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8000;
 const authUser = {
@@ -46,7 +46,7 @@ server.post('/auth/signout', (req, res) => {
 server.post('/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
-      message: 'Unauthorized',
+      message: 'UnauthorizedOOOOOOOOOOOOOO',
     });
   }
 
