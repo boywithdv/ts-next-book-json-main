@@ -28,7 +28,7 @@ server.post('/auth/signin', (req, res) => {
   //tokenの設定を行う
   res.cookie('token', 'dummy_token', {
     maxAge: 3600 * 1000,
-    httpOnly: false,
+    httpOnly: true,
   });
   res.status(201).json(authUser);
 });
