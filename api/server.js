@@ -56,12 +56,15 @@ server.post('/purchases', (req, res) => {
 });
 
 //初期画面描画時に実行される
+//errorStates が404になる理由がある
+// errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
 server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'Unauthorized /users/me',
     });
   }
+  message:"これはエラーです"
 
   res.status(200).json(authUser);
 });
