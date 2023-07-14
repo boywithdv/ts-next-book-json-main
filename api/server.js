@@ -49,7 +49,6 @@ server.post('/purchases', (req, res) => {
       message: 'UnauthorizedOOOOOOOOOOOOOO',
     });
   }
-
   res.status(201).json({
     message: 'ok',
   });
