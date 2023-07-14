@@ -25,10 +25,10 @@ server.post('/auth/signin', (req, res) => {
     return res.status(401).json({message: 'Username or password are incorrect',
     });
   }
-
+  //tokenの設定を行う
   res.cookie('token', 'dummy_token', {
     maxAge: 3600 * 1000,
-    httpOnly: true,
+    httpOnly: false,
   });
   res.status(201).json(authUser);
 });
