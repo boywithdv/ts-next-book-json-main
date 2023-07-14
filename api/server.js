@@ -63,6 +63,11 @@ server.get('/users/me', (req, res) => {
     return res.status(401).json({
       message: 'Unauthorized /users/me',
     });
+  }else {
+    res.status(200).json({
+      message: 'ok',
+      data: authUser,
+    });
   }
   res.status(200).json(authUser);
 });
