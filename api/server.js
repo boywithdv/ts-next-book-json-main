@@ -49,6 +49,7 @@ server.post('/purchases', (req, res) => {
       message: 'UnauthorizedOOOOOOOOOOOOOO',
     });
   }
+
   res.status(201).json({
     message: 'ok',
   });
@@ -57,7 +58,7 @@ server.post('/purchases', (req, res) => {
 //初期画面描画時に実行される
 //errorStates が404になる理由がある
 // errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
-//users/meエンドポイントに対してのget request
+//users/meに対してのget request
 server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
