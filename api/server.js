@@ -59,12 +59,14 @@ server.post('/purchases', (req, res) => {
 //errorStates が404になる理由がある
 // errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
 //users/meに対してのget request
-server.get('api/proxy/users/me', (req, res) => {
-    res.status(401).json({
+server.get('/users/me', (req, res) => {
+  if (req.cookies['token'] !== 'dummy_token') {
+    return res.status(401).json({
       message: 'Unauthorized /users/me',
     });
   }
-);
+  res.status(200).json(authUser);
+});
 
 server.use(middlewares);
 server.use(router);
