@@ -59,7 +59,7 @@ server.post('/purchases', (req, res) => {
 //errorStates が404になる理由がある
 // errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
 //users/meに対してのget request
-server.get('/users/me', (req, res) => {
+server.get('api/proxy/users/me', (req, res) => {
   message:"Test"
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
@@ -78,5 +78,4 @@ server.listen(port, (err) => {
     return;
   }
   console.log("Start listening...");
-  console.log('http://localhost:' + port);
 });
