@@ -54,7 +54,6 @@ server.post('/purchases', (req, res) => {
 // errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
 //users/meに対してのget request
 server.get('/users/me', (req, res) => {
-  message:"Test"
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'Unauthorized /users/me',
@@ -71,4 +70,5 @@ server.listen(port, (err) => {
     return;
   }
   console.log("Start listening...");
+  console.log('http://localhost:' + port);
 });
