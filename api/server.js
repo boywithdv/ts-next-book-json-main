@@ -59,7 +59,15 @@ server.get('/users/me', (req, res) => {
       message: 'Unauthorized /api/proxy/users/me',
     });
   }
+  res.status(200).json(authUser);
+});
 
+server.get('/api/proxy/users/me', (req, res) => {
+  if (req.cookies['token'] !== 'dummy_token') {
+    return res.status(401).json({
+      message: 'Unauthorized /api/proxy/users/me',
+    });
+  }
   res.status(200).json(authUser);
 });
 
