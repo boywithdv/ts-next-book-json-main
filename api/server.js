@@ -13,20 +13,15 @@ const authUser = {
   displayName: 'Taketo Yoshida',
   email: 'taketo@example.com',
   profileImageUrl: '/users/1.png',
-  description:
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+  description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
 };
 
 server.use(cookieParser());
 server.use(express.json());
 
 server.post('/auth/signin', (req, res) => {
-  if (
-    !(req.body['username'] === 'user' && req.body['password'] === 'password')
-  ) {
-    return res.status(401).json({
-      message: 'Username or password are incorrect',
-    });
+  if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
+    return res.status(401).json({ message: 'Username or password are incorrect' });
   }
 
   res.cookie('token', 'dummy_token', {
@@ -57,13 +52,11 @@ server.post('/purchases', (req, res) => {
     message: 'ok',
   });
 });
-//初期画面描画時に実行される
-//errorStates が404になる理由がある
-// errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
+
 server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
-      message: 'Unauthorized /users/me',
+      message: 'Unauthorized',
     });
   }
 
@@ -79,5 +72,4 @@ server.listen(port, (err) => {
     return;
   }
   console.log("Start listening...");
-  console.log('http://localhost:' + port);
 });
