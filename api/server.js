@@ -13,24 +13,22 @@ const authUser = {
   displayName: 'Taketo Yoshida',
   email: 'taketo@example.com',
   profileImageUrl: '/users/1.png',
-  description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+  description:
+    'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
 };
-
 server.use(cookieParser());
 server.use(express.json());
-
 server.post('/auth/signin', (req, res) => {
   if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
-    return res.status(401).json({ message: 'Username or password are incorrect' });
+    return res.status(401).json({message: 'Username or password are incorrect',
+    });
   }
-
   res.cookie('token', 'dummy_token', {
     maxAge: 3600 * 1000,
     httpOnly: true,
   });
   res.status(201).json(authUser);
 });
-
 server.post('/auth/signout', (req, res) => {
   res.cookie('token', '', {
     maxAge: 0,
@@ -40,28 +38,29 @@ server.post('/auth/signout', (req, res) => {
     message: 'Sign out successfully',
   });
 });
-
 server.post('/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
-      message: 'Unauthorized /purchases',
+      message: 'UnauthorizedOOOOOOOOOOOOOO',
     });
   }
-
   res.status(201).json({
     message: 'ok',
   });
 });
-
+//初期画面描画時に実行される
+//errorStates が404になる理由がある
+// errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
 server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
-      message: 'Unauthorized /api/proxy/users/me',
+      message: 'Unauthorized /users/me',
     });
   }
+  message:"これはエラーです"
+
   res.status(200).json(authUser);
 });
-
 server.use(middlewares);
 server.use(router);
 server.listen(port, (err) => {
@@ -71,4 +70,5 @@ server.listen(port, (err) => {
     return;
   }
   console.log("Start listening...");
+  console.log('http://localhost:' + port);
 });
