@@ -56,7 +56,7 @@ server.post('/purchases', (req, res) => {
 server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
-      message: 'Unauthorized',
+      message: 'Unauthorized /api/proxy/users/me',
     });
   }
 
