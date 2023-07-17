@@ -16,19 +16,26 @@ const authUser = {
   description:
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
 };
+
 server.use(cookieParser());
 server.use(express.json());
+
 server.post('/auth/signin', (req, res) => {
-  if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
-    return res.status(401).json({message: 'Username or password are incorrect',
+  if (
+    !(req.body['username'] === 'user' && req.body['password'] === 'password')
+  ) {
+    return res.status(401).json({
+      message: 'Username or password are incorrect',
     });
   }
+
   res.cookie('token', 'dummy_token', {
     maxAge: 3600 * 1000,
     httpOnly: true,
   });
   res.status(201).json(authUser);
 });
+
 server.post('/auth/signout', (req, res) => {
   res.cookie('token', '', {
     maxAge: 0,
@@ -38,12 +45,14 @@ server.post('/auth/signout', (req, res) => {
     message: 'Sign out successfully',
   });
 });
+
 server.post('/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
-      message: 'UnauthorizedOOOOOOOOOOOOOO',
+      message: 'Unauthorized',
     });
   }
+
   res.status(201).json({
     message: 'ok',
   });
@@ -54,13 +63,13 @@ server.post('/purchases', (req, res) => {
 server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
-      message: 'Unauthorized /users/me',
+      message: 'Unauthorized',
     });
   }
-  message:"これはエラーです"
 
   res.status(200).json(authUser);
 });
+
 server.use(middlewares);
 server.use(router);
 server.listen(port, (err) => {
