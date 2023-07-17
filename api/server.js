@@ -44,7 +44,7 @@ server.post('/auth/signout', (req, res) => {
 server.post('/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
-      message: 'Unauthorized',
+      message: 'Unauthorized /purchases',
     });
   }
 
