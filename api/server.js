@@ -39,7 +39,7 @@ server.post('/api/proxy/auth/signout', (req, res) => {
     message: 'Sign out successfully',
   });
 });
-server.post('/purchases', (req, res) => {
+server.post('/api/proxy/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'UnauthorizedOOOOOOOOOOOOOO',
