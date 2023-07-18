@@ -1,3 +1,4 @@
+//問題なく動作した
 const process = require("process");
 const jsonServer = require('json-server');
 const cookieParser = require('cookie-parser');
