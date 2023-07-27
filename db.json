@@ -369,33 +369,47 @@
           "file": {},
           "src": "blob:http://localhost:3000/e24c08eb-a3c5-4c0c-804d-9b632f5548f8"
         }
-      ]
-    }
-  ],
-  "users": [
-    {
-      "id": 1,
-      "username": "taketo",
-      "displayName": "Taketo Yoshida",
-      "email": "taketo@example.com",
-      "profileImageUrl": "/users/1.png",
-      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      ],
+      "title": "出品",
+      "description": "dafd",
+      "category": "shoes",
+      "condition": "used",
+      "price": 1111,
+      "imageUrl": "/products/shoes/feet-1840619_1920.jpeg",
+      "blurDataUrl": "",
+      "owner": {
+        "id": "1",
+        "username": "taketo",
+        "displayName": "Taketo Yoshida",
+        "email": "taketo@example.com",
+        "profileImageUrl": "/users/1.png",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      },
+      "id": 49
     },
     {
-      "id": 2,
-      "username": "takuya",
-      "displayName": "Takuya Tejima",
-      "email": "takuya@example.com",
-      "profileImageUrl": "/users/2.png",
-      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-    },
-    {
-      "id": 3,
-      "username": "kourin",
-      "displayName": "Yoshiki Takabayashi",
-      "email": "kourin@example.com",
-      "profileImageUrl": "/users/3.png",
-      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      "image": [
+        {
+          "file": {},
+          "src": "blob:http://localhost:3000/e24c08eb-a3c5-4c0c-804d-9b632f5548f8"
+        }
+      ],
+      "title": "出品",
+      "description": "dafd",
+      "category": "shoes",
+      "condition": "used",
+      "price": 1111,
+      "imageUrl": "/products/shoes/feet-1840619_1920.jpeg",
+      "blurDataUrl": "",
+      "owner": {
+        "id": "1",
+        "username": "taketo",
+        "displayName": "Taketo Yoshida",
+        "email": "taketo@example.com",
+        "profileImageUrl": "/users/1.png",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      },
+      "id": 50
     }
   ]
 }
