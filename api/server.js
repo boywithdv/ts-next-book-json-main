@@ -19,7 +19,7 @@ const authUser = {
 };
 server.use(cookieParser());
 server.use(express.json());
-server.post('/api/proxy/auth/signin', (req, res) => {
+server.post('/auth/signin', (req, res) => {
   if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
     return res.status(401).json({message: 'Username or password are incorrect',
     });
@@ -31,7 +31,7 @@ server.post('/api/proxy/auth/signin', (req, res) => {
   });
   res.status(201).json(authUser);
 });
-server.post('/api/proxy/auth/signout', (req, res) => {
+server.post('/auth/signout', (req, res) => {
   res.cookie('token', '', {
     maxAge: 0,
     httpOnly: true,
@@ -40,7 +40,7 @@ server.post('/api/proxy/auth/signout', (req, res) => {
     message: 'Sign out successfully',
   });
 });
-server.post('/api/proxy/purchases', (req, res) => {
+server.post('/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'UnauthorizedOOOOOOOOOOOOOO',
@@ -54,7 +54,7 @@ server.post('/api/proxy/purchases', (req, res) => {
 //errorStates が404になる理由がある
 // errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
 //users/meに対してのget request
-server.get('/api/proxy/users/me', (req, res) => {
+server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'Unauthorized /users/me',
