@@ -19,7 +19,7 @@ const authUser = {
 };
 server.use(cookieParser());
 server.use(express.json());
-server.post('/auth/signin', (req, res) => {
+server.post('/api/proxy/auth/signin', (req, res) => {
   if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
     return res.status(401).json({message: 'Username or password are incorrect',
     });
