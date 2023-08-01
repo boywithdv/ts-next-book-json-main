@@ -1,4 +1,3 @@
-//問題なく動作した
 const process = require("process");
 const jsonServer = require('json-server');
 const cookieParser = require('cookie-parser');
@@ -8,6 +7,15 @@ const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8000;
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+server.use(cors({
+  origin: true,
+  credentials: true,
+}));
+
 const authUser = {
   id: '1',
   username: 'taketo',
@@ -19,7 +27,7 @@ const authUser = {
 };
 server.use(cookieParser());
 server.use(express.json());
-server.post('/api/proxy/auth/signin', (req, res) => {
+server.post('/auth/signin', (req, res) => {
   if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
     return res.status(401).json({message: 'Username or password are incorrect',
     });
@@ -31,7 +39,7 @@ server.post('/api/proxy/auth/signin', (req, res) => {
   });
   res.status(201).json(authUser);
 });
-server.post('/api/proxy/auth/signout', (req, res) => {
+server.post('/auth/signout', (req, res) => {
   res.cookie('token', '', {
     maxAge: 0,
     httpOnly: true,
@@ -40,7 +48,7 @@ server.post('/api/proxy/auth/signout', (req, res) => {
     message: 'Sign out successfully',
   });
 });
-server.post('/api/proxy/purchases', (req, res) => {
+server.post('/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: '再度ログインを行ってください',
@@ -50,11 +58,7 @@ server.post('/api/proxy/purchases', (req, res) => {
     message: 'ok',
   });
 });
-//初期画面描画時に実行される
-//errorStates が404になる理由がある
-// errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
-//users/meに対してのget request
-server.get('/api/proxy/users/me', (req, res) => {
+server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'Unauthorized /users/me',
@@ -62,13 +66,44 @@ server.get('/api/proxy/users/me', (req, res) => {
   }
   res.status(200).json(authUser);
 });
+
+//アップロードしたファイルを保存するディレクトリ
+const uploadDirectory = path.join(__dirname, "upload");
+if (!fs.existsSync(uploadDirectory)) {
+  fs.mkdirSync(uploadDirectory);
+}
+//Multerの設定
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDirectory);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+if (!fs.existsSync(uploadDirectory)) {
+  fs.mkdirSync(uploadDirectory);
+}
+const upload = multer({ storage });
+
+//ファイルのアップロードを処理するエンドポイント
+server.post('/upload', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
+  //保存したファイルのパスを公開URLにする
+  const publicUrl = `/upload/${req.file.filename}.png`;
+  console.log('これがファイルのURLです : ',`${publicUrl}`)
+  res.json({ url: `${publicUrl}` });
+})
+
 server.use(middlewares);
 server.use(router);
 server.listen(port, (err) => {
   if (err) {
     console.error(err);
     process.exit();
-    return;
   }
   console.log("Start listening...");
   console.log('http://localhost:' + port);
