@@ -88,6 +88,7 @@ const upload = multer({ storage });
 //ファイルのアップロードを処理するエンドポイント
 server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ",req.body)
+  
   //保存したファイルのパスを公開URLにする
   const publicUrl = `/upload/${req.file.filename}.png`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
