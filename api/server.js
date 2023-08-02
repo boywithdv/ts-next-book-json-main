@@ -71,7 +71,6 @@ server.get('/api/proxy/users/me', (req, res) => {
 
 
 const uploadDirectory = path.join(__dirname, 'uploads');
-
 // アップロードされたファイルの保存設定
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
