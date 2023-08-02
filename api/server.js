@@ -95,7 +95,7 @@ const upload = multer({ storage });
  * しかし公開した場合にはエラーとなる
  */
 
-server.post('/api/proxy/product', upload.single('file'), (req, res) => {
+server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ", req.body)
   const filePath = path.join("/tmp", "data.json");
   fs.writeFileSync(filePath, JSON.stringify(req.body));
