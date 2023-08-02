@@ -86,7 +86,7 @@ const storage = multer.diskStorage({
 //ここから追加(sotrage定数追加)
 const upload = multer({ storage });
 //ファイルのアップロードを処理するエンドポイント
-server.post('/api/proxy/products', upload.single('file'), (req, res) => {
+server.post('/api/proxy/product', upload.single('file'), (req, res) => {
   //もしファイルがない場合はエラーを出力
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
