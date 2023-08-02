@@ -7,15 +7,6 @@ const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8000;
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-
-server.use(cors({
-  origin: true,
-  credentials: true,
-}));
-
 const authUser = {
   id: '1',
   username: 'taketo',
@@ -58,6 +49,10 @@ server.post('/api/proxy/purchases', (req, res) => {
     message: 'ok',
   });
 });
+//初期画面描画時に実行される
+//errorStates が404になる理由がある
+// errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
+//users/meに対してのget request
 server.get('/api/proxy/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
@@ -66,44 +61,13 @@ server.get('/api/proxy/users/me', (req, res) => {
   }
   res.status(200).json(authUser);
 });
-
-//アップロードしたファイルを保存するディレクトリ
-const uploadDirectory = path.join(__dirname, "upload");
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory);
-}
-//Multerの設定
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDirectory);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory);
-}
-const upload = multer({ storage });
-
-//ファイルのアップロードを処理するエンドポイント
-server.post('/api/proxy/upload', upload.single('file'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
-  }
-  //保存したファイルのパスを公開URLにする
-  const publicUrl = `/upload/${req.file.filename}.png`;
-  console.log('これがファイルのURLです : ',`${publicUrl}`)
-  res.json({ url: `${publicUrl}` });
-})
-
 server.use(middlewares);
 server.use(router);
 server.listen(port, (err) => {
   if (err) {
     console.error(err);
     process.exit();
+    return;
   }
   console.log("Start listening...");
   console.log('http://localhost:' + port);
