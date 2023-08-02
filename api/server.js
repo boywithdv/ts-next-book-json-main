@@ -86,13 +86,19 @@ const storage = multer.diskStorage({
 //ここから追加(sotrage定数追加)
 const upload = multer({ storage });
 //ファイルのアップロードを処理するエンドポイント
-server.post('/api/proxy/products', upload.single('file'), (req, res) => {
+//エンドポイントが違うことでアップロードできる
+/**
+ * クライアント /products
+ * サーバー　/product
+ */
+server.post('/api/proxy/product', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ",req.body)
   
-  //保存したファイルのパスを公開URLにする
+  //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
-  res.status(200).json({url:publicUrl});
+  res.status(200).json(req.body)
+  //res.status(200).json({url : publicUrl});
   //res.json({ url: `${publicUrl}` });
 })
 server.use(middlewares);
