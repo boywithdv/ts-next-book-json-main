@@ -10,6 +10,10 @@ const port = process.env.PORT || 8000;
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+server.use(cors({
+  origin: true,
+  credentials: true,
+}));
 const authUser = {
   id: '1',
   username: 'taketo',
