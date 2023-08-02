@@ -7,6 +7,9 @@ const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8000;
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const authUser = {
   id: '1',
   username: 'taketo',
