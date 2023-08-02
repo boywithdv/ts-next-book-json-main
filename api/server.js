@@ -84,13 +84,10 @@ const storage = multer.diskStorage({
 //ここから追加(sotrage定数追加)
 const upload = multer({ storage });
 //ファイルのアップロードを処理するエンドポイント
-server.post('/api/proxy/products', upload.single('file'), (req, res) => {
+server.post('/api/proxy/products', (req, res) => {
   console.log("111これが req.body : ",req.body)
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
-  }
   //保存したファイルのパスを公開URLにする
-  const publicUrl = `/upload/${req.file.filename}.png`;
+  const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
   res.status(200).json({url:publicUrl});
   //res.json({ url: `${publicUrl}` });
