@@ -69,6 +69,7 @@ server.get('/api/proxy/users/me', (req, res) => {
   res.status(200).json(authUser);
 });
 //ここから追加
+const upload = multer({ storage });
 
 
 
