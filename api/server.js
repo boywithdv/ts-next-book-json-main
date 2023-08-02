@@ -72,10 +72,14 @@ server.get('/api/proxy/users/me', (req, res) => {
 //ここから追加
 const upload = multer({ storage });
 //ファイルのアップロードを処理するエンドポイント
-server.post('/api/proxy/upload', upload.single('file'), (req, res) => {
+server.post('/api/proxy/upload', (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
+  //保存したファイルのパスを公開URLにする
+  const publicUrl = `/upload/${req.file.filename}.png`;
+  console.log('これがファイルのURLです : ',`${publicUrl}`)
+  res.json({ url: `${publicUrl}` });
 })
 
 server.use(middlewares);
