@@ -88,11 +88,17 @@ const upload = multer({ storage });
 //ファイルのアップロードを処理するエンドポイント
 //エンドポイントが違うことでアップロードできる
 /**
- * クライアント /products
+ * クライアント /products 
  * サーバー　/product
  */
+/**
+ * しかし公開した場合にはエラーとなる
+ */
+
 server.post('/api/proxy/product', upload.single('file'), (req, res) => {
-  console.log("111これが req.body : ",req.body)
+  console.log("111これが req.body : ", req.body)
+  const filePath = path.join("/tmp", "data.json");
+  fs.writeFileSync(filePath, JSON.stringify(req.body));
   
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
