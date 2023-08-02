@@ -72,8 +72,8 @@ server.get('/api/proxy/users/me', (req, res) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDirectory = './uploads';
     cb(null, uploadDirectory);
+    console.log("これがアップロード ; ",req.body)
   },
   filename: (req, file, cb) => {
     console.log("これがローディング : ",req.body)
@@ -93,7 +93,7 @@ server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   //保存したファイルのパスを公開URLにする
   const publicUrl = `/upload/${req.file.filename}.png`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
-  res.status(200).json({ url: publicUrl });
+  res.status(200).json({url:publicUrl});
   //res.json({ url: `${publicUrl}` });
 })
 
