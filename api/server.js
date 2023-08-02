@@ -91,7 +91,7 @@ server.post('/api/proxy/product', upload.single('file'), (req, res) => {
     return res.status(400).json({ error: "No file uploaded" });
   }
   //保存したファイルのパスを公開URLにする
-  const publicUrl = `/upload/${req.body[0].profileImageUrl}.png`;
+  const publicUrl = `/upload/${req.body.image.src}.png`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
   res.status(200).json({url:publicUrl});
   //res.json({ url: `${publicUrl}` });
