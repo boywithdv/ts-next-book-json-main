@@ -94,6 +94,7 @@ server.post('/products', upload.single('file'), (req, res) => {
   res.status(200).json({url:publicUrl});
   //res.json({ url: `${publicUrl}` });
 })
+
 server.use(middlewares);
 server.use(router);
 server.listen(port, (err) => {
