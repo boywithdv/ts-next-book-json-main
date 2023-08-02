@@ -25,7 +25,7 @@ const authUser = {
 };
 server.use(cookieParser());
 server.use(express.json());
-server.post('/auth/signin', (req, res) => {
+server.post('/api/proxy/auth/signin', (req, res) => {
   if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
     return res.status(401).json({message: 'Username or password are incorrect',
     });
@@ -37,7 +37,7 @@ server.post('/auth/signin', (req, res) => {
   });
   res.status(201).json(authUser);
 });
-server.post('/auth/signout', (req, res) => {
+server.post('/api/proxy/auth/signout', (req, res) => {
   res.cookie('token', '', {
     maxAge: 0,
     httpOnly: true,
@@ -46,7 +46,7 @@ server.post('/auth/signout', (req, res) => {
     message: 'Sign out successfully',
   });
 });
-server.post('/purchases', (req, res) => {
+server.post('/api/proxy/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: '再度ログインを行ってください',
@@ -60,7 +60,7 @@ server.post('/purchases', (req, res) => {
 //errorStates が404になる理由がある
 // errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
 //users/meに対してのget request
-server.get('/users/me', (req, res) => {
+server.get('/api/proxy/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'Unauthorized /users/me',
@@ -76,10 +76,8 @@ server.get('/users/me', (req, res) => {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDirectory);
-    console.log("これがアップロード ; ",req.body)
   },
   filename: (req, file, cb) => {
-    console.log("これがローディング : ",req.body)
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
