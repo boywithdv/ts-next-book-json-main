@@ -88,7 +88,7 @@ const upload = multer({ storage });
 server.post('/api/proxy/product', upload.single('file'), (req, res) => {
   console.log(req.file)
   console.log("111これが req.body : ",req.body)
-  if (!req.file) {
+  if (!req.body) {
     return res.status(400).json({ error: "No file uploaded" });
   }
   //保存したファイルのパスを公開URLにする
