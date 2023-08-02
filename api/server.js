@@ -27,7 +27,7 @@ const authUser = {
 };
 server.use(cookieParser());
 server.use(express.json());
-server.post('/auth/signin', (req, res) => {
+server.post('/api/proxy/auth/signin', (req, res) => {
   if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
     return res.status(401).json({message: 'Username or password are incorrect',
     });
@@ -39,7 +39,7 @@ server.post('/auth/signin', (req, res) => {
   });
   res.status(201).json(authUser);
 });
-server.post('/auth/signout', (req, res) => {
+server.post('/api/proxy/auth/signout', (req, res) => {
   res.cookie('token', '', {
     maxAge: 0,
     httpOnly: true,
@@ -48,7 +48,7 @@ server.post('/auth/signout', (req, res) => {
     message: 'Sign out successfully',
   });
 });
-server.post('/purchases', (req, res) => {
+server.post('/api/proxy/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: '再度ログインを行ってください',
@@ -58,7 +58,7 @@ server.post('/purchases', (req, res) => {
     message: 'ok',
   });
 });
-server.get('/users/me', (req, res) => {
+server.get('/api/proxy/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'Unauthorized /users/me',
@@ -88,7 +88,7 @@ if (!fs.existsSync(uploadDirectory)) {
 const upload = multer({ storage });
 
 //ファイルのアップロードを処理するエンドポイント
-server.post('/upload', upload.single('file'), (req, res) => {
+server.post('/api/proxy/upload', upload.single('file'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
