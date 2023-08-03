@@ -10,6 +10,11 @@ const port = process.env.PORT || 8000;
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+//aws-sdkを使用して別のサーバーに画像をアップロードする ---- vercel上のセキュリティ上の問題で画像が表示されないため
+const AWS = require('aws-sdk');
+// インスタンス作成(S3バケットへのオブジェクトのアップロード、ダウンロード、削除の操作ができる)
+const s3 = new AWS.S3();
+
 server.use(cors({
   origin: true,
   credentials: true,
@@ -96,16 +101,49 @@ const upload = multer({ storage });
  */
 const filePath = path.join("/tmp", "db.json");
 server.post('/api/proxy/products', upload.single('file'), (req, res) => {
-  console.log("111これが req.body : ", req.body)
-  //この2行を追加してパスの設定ができるようにした
-  fs.writeFileSync(filePath, JSON.stringify(req.body));
-  console.log('filePathは ',filePath)
+  console.log('filePathは ', filePath)
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
-  res.status(200).json(req.body)
-  //res.status(200).json({url : publicUrl});
-  //res.json({ url: `${publicUrl}` });
+  exports.handler = async (event) => {
+    const { image, title, description, category, condition, price, imageUrl, blurDataUrl, owner } = JSON.parse(event.body);
+    // 保存するデータを準備
+    const productData = {
+      image,
+      title,
+      description,
+      category,
+      condition,
+      price,
+      imageUrl,
+      blurDataUrl,
+      owner,
+    };
+    try {
+      // AWS S3にファイルをアップロード
+      const params = {
+        Bucket: 'your-bucket-name', // 保存先のバケット名
+        Key: `products/${Date.now()}.json`, // ファイル名をランダムに生成（例: products/1628182861994.json）
+        Body: JSON.stringify(productData), // JSONデータを文字列に変換してアップロード
+        ContentType: 'application/json', // ファイルのContent-Typeを指定
+      };
+      res.status(200).json(req.body)
+      await s3.putObject(params).promise();
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: 'ファイルがアップロードされました！' }),
+      };
+    } catch (err) {
+      console.error('ファイルアップロードエラー:', err);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'ファイルアップロードに失敗しました。' }),
+      };
+    }
+    res.status(200).json(req.body)
+    //res.status(200).json({url : publicUrl});
+    //res.json({ url: `${publicUrl}` });
+  }
 })
 server.use(middlewares);
 server.use(router);

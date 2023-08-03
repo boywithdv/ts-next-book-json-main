@@ -12,6 +12,7 @@
   "author": "Jesper Orb",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1428.0",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "cookie-parser": "^1.4.5",
