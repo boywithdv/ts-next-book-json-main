@@ -81,25 +81,13 @@ const storage = multer.diskStorage({
 //ここから追加(sotrage定数追加)
 const upload = multer({ storage });
 //ファイルのアップロードを処理するエンドポイント
-//エンドポイントが違うことでアップロードできる
-/**
- * クライアント /products 
- * サーバー　/product
- */
-/**
- * しかし公開した場合にはエラーとなる
- */
-const filePath = path.join("/tmp", "db.json");
 server.post('/api/proxy/products', upload.single('file'), (req, res) => {
-  console.log("111これが req.body : ", req.body)
-  //この2行を追加してパスの設定ができるようにした
-  fs.writeFileSync(filePath, JSON.stringify(req.body));
-  console.log('filePathは ',filePath)
-  //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
+  console.log("111これが req.body : ",req.body)
+
+  //保存したファイルのパスを公開URLにする
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
-  res.status(200).json(req.body)
-  //res.status(200).json({url : publicUrl});
+  res.status(200).json({url:publicUrl});
   //res.json({ url: `${publicUrl}` });
 })
 server.use(middlewares);
