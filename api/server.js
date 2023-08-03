@@ -96,7 +96,6 @@ const upload = multer({ storage });
  */
 
 const dbPath = path.join(process.cwd(), '/db.json');
-å
 const filePath = path.join("/tmp", "db.json");
 server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ", req.body)
