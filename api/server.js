@@ -96,8 +96,13 @@ const upload = multer({ storage });
  */
 
 const dbPath = path.join(process.cwd(), '/db.json');
-
-export default function handler(req, res) {
+å
+const filePath = path.join("/tmp", "db.json");
+server.post('/api/proxy/products', upload.single('file'), (req, res) => {
+  console.log("111これが req.body : ", req.body)
+  //この2行を追加してパスの設定ができるようにした
+  fs.writeFileSync(filePath, JSON.stringify(req.body));
+  console.log('filePathは ', filePath)
   if (req.method === 'POST') {
     const { image, title, description, category, condition, price, imageUrl, blurDataUrl, owner } = req.body;
 
@@ -128,13 +133,6 @@ export default function handler(req, res) {
   } else {
     res.status(405).json({ error: 'Method not allowed' });
   }
-}
-const filePath = path.join("/tmp", "db.json");
-server.post('/api/proxy/products', upload.single('file'), (req, res) => {
-  console.log("111これが req.body : ", req.body)
-  //この2行を追加してパスの設定ができるようにした
-  fs.writeFileSync(filePath, JSON.stringify(req.body));
-  console.log('filePathは ',filePath)
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
