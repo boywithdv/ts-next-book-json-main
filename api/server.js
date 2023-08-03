@@ -123,6 +123,7 @@ export default function handler(req, res) {
       res.status(201).json({ message: 'Product added successfully!', data: productData });
     } catch (err) {
       console.error('Failed to add product:', err);
+      // 製品の追加に失敗
       res.status(500).json({ error: 'Failed to add product' });
     }
   } else {
