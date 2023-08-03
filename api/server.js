@@ -95,7 +95,15 @@ const upload = multer({ storage });
  * しかし公開した場合にはエラーとなる
  */
 const filePath = path.join("/tmp", "db.json");
-server.post('/api/proxy/products', upload.single('file'), (req, res) => {
+server.post('/api/proxy/products',  (req, res) => {
+  console.log("111これが req.body : ", req.body)
+  /*
+  //この2行を追加してパスの設定ができるようにした
+  fs.writeFileSync(filePath, JSON.stringify(req.body));
+  console.log('filePathは ',filePath)
+  //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
+  */
+  const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
   res.status(200).json(req.body)
   //res.status(200).json({url : publicUrl});
