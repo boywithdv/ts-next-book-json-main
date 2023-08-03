@@ -94,6 +94,41 @@ const upload = multer({ storage });
 /**
  * しかし公開した場合にはエラーとなる
  */
+
+const dbPath = path.join(process.cwd(), '/db.json');
+
+export default function handler(req, res) {
+  if (req.method === 'POST') {
+    const { image, title, description, category, condition, price, imageUrl, blurDataUrl, owner } = req.body;
+
+    // 保存するデータを準備
+    const productData = {
+      image,
+      title,
+      description,
+      category,
+      condition,
+      price,
+      imageUrl,
+      blurDataUrl,
+      owner,
+    };
+
+    try {
+      // db.jsonにデータを追加
+      const db = JSON.parse(fs.readFileSync(dbPath));
+      db.products.push(productData);
+      fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+
+      res.status(201).json({ message: 'Product added successfully!', data: productData });
+    } catch (err) {
+      console.error('Failed to add product:', err);
+      res.status(500).json({ error: 'Failed to add product' });
+    }
+  } else {
+    res.status(405).json({ error: 'Method not allowed' });
+  }
+}
 const filePath = path.join("/tmp", "db.json");
 server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ", req.body)
