@@ -86,7 +86,7 @@ const upload = multer({ storage });
  * クライアント /products
  * サーバー　/product
  */
-server.post('/api/proxy/product', upload.single('file'), (req, res) => {
+server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ",req.body)
 
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
