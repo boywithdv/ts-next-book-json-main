@@ -113,7 +113,6 @@ export default function handler(req, res) {
       blurDataUrl,
       owner,
     };
-
     try {
       // db.jsonにデータを追加
       const db = JSON.parse(fs.readFileSync(dbPath));
