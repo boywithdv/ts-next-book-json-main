@@ -99,8 +99,6 @@ const dbPath = path.join(process.cwd(), '/db.json');
 const filePath = path.join("/tmp", "db.json");
 server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ", req.body)
-  //この2行を追加してパスの設定ができるようにした
-  fs.writeFileSync(filePath, JSON.stringify(req.body));
   console.log('filePathは ', filePath)
   if (req.method === 'POST') {
     const { image, title, description, category, condition, price, imageUrl, blurDataUrl, owner } = req.body;
@@ -120,12 +118,13 @@ server.post('/api/proxy/products', upload.single('file'), (req, res) => {
 
     try {
       // db.jsonにデータを追加
-      const db = JSON.parse(fs.readFileSync(dbPath));
+      const db = JSON.parse(fs.readFileSync(filePath));
       db.products.push(productData);
-      fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+      fs.writeFileSync(filePath, JSON.stringify(db, null, 2));
 
       res.status(201).json({ message: 'Product added successfully!', data: productData });
     } catch (err) {
+      //製品の追加ができていないエラー
       console.error('Failed to add product:', err);
       res.status(500).json({ error: 'Failed to add product' });
     }
