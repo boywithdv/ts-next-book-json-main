@@ -99,7 +99,7 @@ server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
-  res.status(200).json(req.body)
+  res.status(200).json(req.body.product)
   //res.status(200).json({url : publicUrl});
   //res.json({ url: `${publicUrl}` });
 })
