@@ -92,8 +92,8 @@ server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   // db.jsonに新しいProductデータを追加する
   const dbPath = '/tmp/db.json';
   const dbData = JSON.parse(fs.readFileSync(dbPath));
-  if (!dbData.products) {
-    dbData.products = [];
+  if (!dbData.product) {
+    dbData.product = []
   }
   dbData.products.push(req.body.product);
   // db.jsonを更新する
