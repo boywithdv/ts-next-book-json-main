@@ -117,7 +117,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post('/api/proxy/products', upload.single('file'), async (req, res) => {
-  const { title, filename } = req.body;
+  const { title, filename } = req.body.imageUrl;
   try {
     // 一時的なPDFファイルを作成
     const writeStream = createPDF(title, filename);
