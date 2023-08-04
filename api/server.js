@@ -92,14 +92,14 @@ server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   // db.jsonに新しいProductデータを追加する
   const dbPath = '/tmp/db.json';
   const dbData = JSON.parse(fs.readFileSync(dbPath));
-  dbData.products.push(req.body);
+  dbData.products.push(req.body.product);
   // db.jsonを更新する
   fs.writeFileSync(dbPath, JSON.stringify(dbData, null, 2));
   res.status(200).json(dbData);
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
-  res.status(200).json(req.body.product)
+  res.status(200).json(req.body)
   //res.status(200).json({url : publicUrl});
   //res.json({ url: `${publicUrl}` });
 })
