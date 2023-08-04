@@ -89,8 +89,8 @@ const uploadToS3 = (filename) => {
     ContentType: 'application/pdf',
   };
   const s3 = new aws.S3({
-    accessKeyId: process.env.YOUR_AWS_KEY,
-    secretAccessKey: process.env.YOUR_AWS_SECRET,
+    accessKeyId: "AKIAUPPJEECP2SYBAGML",
+    secretAccessKey: 'jmWz+FCGEX+zs9BWw4FruE/81bHkKUiIMVZfCHsW',
   });
   return new Promise((resolve, reject) => {
     s3.putObject(params, function (err, response) {
