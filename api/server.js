@@ -10,6 +10,7 @@ const port = process.env.PORT || 8000;
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const aws = require('aws-sdk')
 server.use(cors({
   origin: true,
   credentials: true,
