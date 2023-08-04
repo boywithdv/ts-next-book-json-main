@@ -124,6 +124,7 @@ app.post('/api/proxy/products', upload.single('file'), async (req, res) => {
     writeStream.on('finish', async function () {
       // PDFファイルをS3にアップロード
       await uploadToS3(filename);
+      console.log(filename)
       res.status(200).json({ message: `File ${filename} saved to S3` });
     });
   } catch (err) {
