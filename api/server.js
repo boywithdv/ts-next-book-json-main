@@ -10,7 +10,6 @@ const port = process.env.PORT || 8000;
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const PDFDocument = require('pdfkit')
 server.use(cors({
   origin: true,
   credentials: true,
@@ -69,71 +68,34 @@ server.get('/api/proxy/users/me', (req, res) => {
   }
   res.status(200).json(authUser);
 });
-
-// PDFを一時的なフォルダ（/tmp）に書き込むためのWriteStreamを作成する関数
-const createPDF = (title, filename) => {
-  const doc = new PDFDocument();
-  let writeStream = fs.createWriteStream(`/tmp/${filename}.pdf`);
-  doc.pipe(writeStream);
-  doc.text(title);
-  doc.end();
-  return writeStream;
-};
-
-// PDFをS3にアップロードする関数
-const uploadToS3 = (filename) => {
-  const fileContent = fs.readFileSync(`/tmp/${filename}.pdf`);
-  const params = {
-    Key: `${filename}.pdf`,
-    Body: fileContent,
-    Bucket: 'your-s3-bucket-name',
-    ContentType: 'application/pdf',
-  };
-  const s3 = new aws.S3({
-    accessKeyId: "AKIAUPPJEECP2SYBAGML",
-    secretAccessKey: 'jmWz+FCGEX+zs9BWw4FruE/81bHkKUiIMVZfCHsW',
-  });
-  return new Promise((resolve, reject) => {
-    s3.putObject(params, function (err, response) {
-      if (err) {
-        console.error('Failed to upload file to S3:', err);
-        reject(err);
-      } else {
-        // remove the temporary file after successful upload
-        fs.unlinkSync(`/tmp/${filename}.pdf`);
-        resolve(response);
-      }
-    });
-  });
-};
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDirectory);
+    console.log("これがアップロード ; ",req.body)
   },
   filename: (req, file, cb) => {
+    console.log("これがローディング : ",req.body)
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
+//ここから追加(sotrage定数追加)
 const upload = multer({ storage });
+//ファイルのアップロードを処理するエンドポイント
+//エンドポイントが違うことでアップロードできる
+/**
+ * クライアント /products
+ * サーバー　/product
+ */
+server.post('/api/proxy/products', upload.single('file'), (req, res) => {
+  console.log("111これが req.body : ",req.body)
 
-server.post('/api/proxy/products', upload.single('file'), async (req, res) => {
-  const { title, filename } = req.body.imageUrl;
-  try {
-    // 一時的なPDFファイルを作成
-    const writeStream = createPDF(title, filename);
-    writeStream.on('finish', async function () {
-      // PDFファイルをS3にアップロード
-      await uploadToS3(filename);
-      console.log('console.log(filename) *', filename)
-      res.status(200).json({ message: `File ${filename} saved to S3` });
-    });
-  } catch (err) {
-    console.error('Error:', err);
-    res.status(500).json({ error: 'Failed to save file' });
-  }
-});
-
+  //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
+  const publicUrl = `${req.body.imageUrl}`;
+  console.log('これがファイルのURLです : ', `${publicUrl}`)
+  res.status(200).json(req.body)
+  //res.status(200).json({url : publicUrl});
+  //res.json({ url: `${publicUrl}` });
+})
 server.use(middlewares);
 server.use(router);
 server.listen(port, (err) => {
