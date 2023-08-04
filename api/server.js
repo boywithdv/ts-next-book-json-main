@@ -87,12 +87,12 @@ const upload = multer({ storage });
  * サーバー　/product
  */
 server.post('/api/proxy/products', upload.single('file'), (req, res) => {
-  console.log("111これが req.body : ",req.body)
+  console.log("111これが req.body : ", req.body)
   const { product } = req.body; // クライアントから送られたProductデータ
   // db.jsonに新しいProductデータを追加する
   const dbPath = '/tmp/db.json';
   const dbData = JSON.parse(fs.readFileSync(dbPath));
-  dbData.products.push(product);
+  dbData.push(product);
   // db.jsonを更新する
   fs.writeFileSync(dbPath, JSON.stringify(dbData, null, 2));
   res.status(200).json(dbData);
