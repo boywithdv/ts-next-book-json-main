@@ -6,7 +6,9 @@ const PDFDocument = require('pdfkit')
 
 export default async function handler(req, res) {
   //リクエストのクエリパラメータからtitle（PDF内のテキストの内容）とfilename（PDFファイルの名前）を取得します。
-  const { query: { title, filename } } = req
+  const {
+    query: { title, filename },
+  } = req
   console.log('これが saveUrl.jsファイルである', req)
   //PDFDocumentクラスのインスタンスを作成します。
   //テキスト（title）をPDFに追加します。
