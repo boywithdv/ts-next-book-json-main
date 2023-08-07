@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const server = jsonServer.create();
-const router = jsonServer.router('/tmp/db.json');
+const router = jsonServer.router('/db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8000;
 const multer = require('multer');
@@ -90,7 +90,7 @@ server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ", req.body)
   const { product } = req.body; // クライアントから送られたProductデータ
   // db.jsonに新しいProductデータを追加する
-  const dbPath = '/tmp/db.json';
+  const dbPath = '/db.json';
   const dbData = JSON.parse(fs.readFileSync(dbPath));
   if (!dbData.products) {
     dbData.products = []
