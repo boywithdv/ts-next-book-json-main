@@ -73,6 +73,7 @@ server.get('/api/proxy/users/me', (req, res) => {
 server.post('/api/proxy/products', (req, res) => {
   const filePath = "db.json"
   //db.jsonファイルの読み込み
+  /*
   const rawData = fs.readFileSync(filePath, 'utf-8')
   const data = JSON.parse(rawData)
   if (!data.products) {
@@ -82,6 +83,7 @@ server.post('/api/proxy/products', (req, res) => {
   data.products.push(req.body)
   //更新されたデータをdb.jsonに書き込む
   fs.writeFileSync(filePath, JSON.stringify(data,null,2));
+  */
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   res.status(200).json(req.body)
 })
