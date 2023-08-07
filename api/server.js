@@ -68,24 +68,39 @@ server.get('/api/proxy/users/me', (req, res) => {
   }
   res.status(200).json(authUser);
 });
-
-
-server.post('/api/proxy/products', (req, res) => {
-  const filePath = "db.json"
-  //db.jsonファイルの読み込み
-  /*
-  const rawData = fs.readFileSync(filePath, 'utf-8')
-  const data = JSON.parse(rawData)
-  if (!data.products) {
-    data.products = []
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDirectory);
+    console.log("これがアップロード ; ",req.body)
+  },
+  filename: (req, file, cb) => {
+    console.log("これがローディング : ",req.body)
+    cb(null, Date.now() + path.extname(file.originalname));
   }
-  //db.jsonに新しいデータを追加する
-  data.products.push(req.body)
-  //更新されたデータをdb.jsonに書き込む
-  fs.writeFileSync(filePath, JSON.stringify(data,null,2));
-  */
+});
+//ここから追加(sotrage定数追加)
+const upload = multer({ storage });
+//ファイルのアップロードを処理するエンドポイント
+//エンドポイントが違うことでアップロードできる
+/**
+ * クライアント /products 
+ * サーバー　/product
+ */
+/**
+ * しかし公開した場合にはエラーとなる
+ */
+
+server.post('/api/proxy/product', upload.single('file'), (req, res) => {
+  console.log("111これが req.body : ", req.body)
+  const filePath = path.join("/tmp", "data.json");
+  fs.writeFileSync(filePath, JSON.stringify(req.body));
+  
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
+  const publicUrl = `${req.body.imageUrl}`;
+  console.log('これがファイルのURLです : ', `${publicUrl}`)
   res.status(200).json(req.body)
+  //res.status(200).json({url : publicUrl});
+  //res.json({ url: `${publicUrl}` });
 })
 server.use(middlewares);
 server.use(router);
