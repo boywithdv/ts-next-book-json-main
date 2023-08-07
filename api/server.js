@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const server = jsonServer.create();
-const router = jsonServer.router('db.json');
+const router = jsonServer.router('/tmp/db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8000;
 const multer = require('multer');
@@ -83,19 +83,22 @@ const upload = multer({ storage });
 //ファイルのアップロードを処理するエンドポイント
 //エンドポイントが違うことでアップロードできる
 /**
- * クライアント /products 
+ * クライアント /products
  * サーバー　/product
  */
-/**
- * しかし公開した場合にはエラーとなる
- */
-
-server.post('/api/proxy/product', upload.single('file'), (req, res) => {
+server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ", req.body)
-  /*
-  const filePath = path.join("/tmp", "data.json");
-  fs.writeFileSync(filePath, JSON.stringify(req.body));
-  */
+  const { product } = req.body; // クライアントから送られたProductデータ
+  // db.jsonに新しいProductデータを追加する
+  const dbPath = '/tmp/db.json';
+  const dbData = JSON.parse(fs.readFileSync(dbPath));
+  if (!dbData.products) {
+    dbData.products = []
+  }
+  dbData.products.push(req.body);
+  // db.jsonを更新する
+  fs.writeFileSync(dbPath, JSON.stringify(dbData.products, null, 2));
+  res.status(200).json(dbData.products);
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
