@@ -1,13 +1,9 @@
-//サーバーレス関数を作成する
-
-
 const low = require('lowdb');
-const MemoryAdapter = require('lowdb/adapters/Memory');
-const adapter = new MemoryAdapter();
-const db = low(adapter);
+const Memory = require('lowdb-middleware');
+const db = low(new Memory());
 
 // 初期データのセットアップ（必要に応じて変更）
-db.defaults({ products: [] }).write();
+db.defaults({ products: [] }).value();
 
 module.exports = async (req, res) => {
   if (req.method === 'GET') {
