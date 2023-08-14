@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const server = jsonServer.create();
-const router = jsonServer.router('/tmp/db.json');
+const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8000;
 const multer = require('multer');
@@ -25,7 +25,7 @@ const authUser = {
 };
 server.use(cookieParser());
 server.use(express.json());
-server.post('/api/proxy/auth/signin', (req, res) => {
+server.post('/auth/signin', (req, res) => {
   if (!(req.body['username'] === 'user' && req.body['password'] === 'password')) {
     return res.status(401).json({message: 'Username or password are incorrect',
     });
@@ -37,7 +37,7 @@ server.post('/api/proxy/auth/signin', (req, res) => {
   });
   res.status(201).json(authUser);
 });
-server.post('/api/proxy/auth/signout', (req, res) => {
+server.post('/auth/signout', (req, res) => {
   res.cookie('token', '', {
     maxAge: 0,
     httpOnly: true,
@@ -46,7 +46,7 @@ server.post('/api/proxy/auth/signout', (req, res) => {
     message: 'Sign out successfully',
   });
 });
-server.post('/api/proxy/purchases', (req, res) => {
+server.post('/purchases', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: '再度ログインを行ってください',
@@ -60,7 +60,7 @@ server.post('/api/proxy/purchases', (req, res) => {
 //errorStates が404になる理由がある
 // errorBodyにmessageが本来はいるが入っていない ===> if文が実行されていない
 //users/meに対してのget request
-server.get('/api/proxy/users/me', (req, res) => {
+server.get('/users/me', (req, res) => {
   if (req.cookies['token'] !== 'dummy_token') {
     return res.status(401).json({
       message: 'Unauthorized /users/me',
@@ -86,19 +86,19 @@ const upload = multer({ storage });
  * クライアント /products
  * サーバー　/product
  */
-server.post('/api/proxy/products', upload.single('file'), (req, res) => {
+server.post('/products', upload.single('file'), (req, res) => {
   console.log("111これが req.body : ", req.body)
   const { product } = req.body; // クライアントから送られたProductデータ
   // db.jsonに新しいProductデータを追加する
-  const dbPath = '/tmp/db.json';
+  const dbPath = 'db.json';
   const dbData = JSON.parse(fs.readFileSync(dbPath));
   if (!dbData.products) {
     dbData.products = []
   }
   dbData.products.push(req.body);
   // db.jsonを更新する
-  fs.writeFileSync(dbPath, JSON.stringify(dbData.products, null, 2));
-  res.status(200).json(dbData.products);
+  fs.writeFileSync(dbPath, JSON.stringify(dbData, null, 2));
+  res.status(200).json(req.body);
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
