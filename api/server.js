@@ -98,7 +98,6 @@ server.post('/products', upload.single('file'), (req, res) => {
   dbData.products.push(req.body);
   // db.jsonを更新する
   fs.writeFileSync(dbPath, JSON.stringify(dbData, null, 2));
-  res.status(200).json(req.body);
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
