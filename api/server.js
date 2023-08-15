@@ -86,9 +86,7 @@ const upload = multer({ storage });
  * クライアント /products
  * サーバー　/product
  */
-server.post('/api/proxy/products', upload.single('file'), (req, res) => {
-  console.log("111これが req.body : ", req.body)
-  const { product } = req.body; // クライアントから送られたProductデータ
+server.post('/api/proxy/product', (req, res) => {
   // db.jsonに新しいProductデータを追加する
   const dbPath = 'tmp/db.json';
   const dbData = JSON.parse(fs.readFileSync(dbPath));
@@ -97,7 +95,7 @@ server.post('/api/proxy/products', upload.single('file'), (req, res) => {
   }
   dbData.products.push(req.body);
   // db.jsonを更新する
-  fs.writeFileSync(dbPath, JSON.stringify(dbData, null, 2));
+  fs.writeFileSync(dbPath, JSON.stringify(dbData));
   //保存したファイルのパスを公開URLにする /upload/${req.file.filename}.png
   const publicUrl = `${req.body.imageUrl}`;
   console.log('これがファイルのURLです : ', `${publicUrl}`)
