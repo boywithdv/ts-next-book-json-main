@@ -88,7 +88,7 @@ const upload = multer({ storage });
  */
 server.post('/api/proxy/products', (req, res) => {
   // db.jsonに新しいProductデータを追加する
-  const dbPath = 'tmp/db.json';
+  const dbPath = path.join("/tmp", "db.json");
   const dbData = JSON.parse(fs.readFileSync(dbPath));
   if (!dbData.products) {
     dbData.products = []
