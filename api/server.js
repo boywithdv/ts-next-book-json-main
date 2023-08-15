@@ -80,9 +80,10 @@ server.post('/api/proxy/products', (req, res) => {
   console.log('this is dbPath : ', dbPath)
   //dbpathのデータを読み込む
   const dbData = JSON.parse(fs.readFileSync(dbPath));
-  console.log('2. dbData is data ',dbData)
   if (!dbData.products) {
     dbData.products = []
+  } else {
+    console.log("dbDataには値が入っています。")
   }
   //dbdataのproductsにreq.bodyを追加する
   dbData.products.push(req.body);
