@@ -338,29 +338,6 @@
                 "profileImageUrl": "/users/3.png",
                 "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
             }
-        },
-        {
-            "image": [
-                {
-                    "file": {},
-                    "src": "blob:http://localhost:3000/3985c8ff-6ffa-4087-819f-aa0281a5c977"
-                }
-            ],
-            "title": "12122",
-            "description": "22222",
-            "category": "shoes",
-            "condition": "used",
-            "price": 3333,
-            "imageUrl": "blob:http://localhost:3000/3985c8ff-6ffa-4087-819f-aa0281a5c977",
-            "blurDataUrl": "",
-            "owner": {
-                "id": "1",
-                "username": "taketo",
-                "displayName": "Taketo Yoshida",
-                "email": "taketo@example.com",
-                "profileImageUrl": "/users/1.png",
-                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-            }
         }
     ],
     "users": [
