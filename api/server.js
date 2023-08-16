@@ -74,24 +74,19 @@ server.get('/api/proxy/users/me', (req, res) => {
  * クライアント /products
  * サーバー　/product
  */
-server.post('/api/proxy/products', (req, res) => {
+server.post('/api/proxy/product', (req, res) => {
   // db.jsonに新しいProductデータを追加する
   const dbPath = path.join("tmp", "db.json");
   console.log('this is dbPath : ', dbPath)
   //dbpathのデータを読み込む
   const dbData = JSON.parse(fs.readFileSync(dbPath));
-  if (!dbData.products) {
-    dbData.products = []
-  } else {
-    console.log("dbDataには値が入っています。")
-  }
   //dbdataのproductsにreq.bodyを追加する
   dbData.products.push(req.body);
   // db.jsonを更新する
-  fs.writeFileSync('/tmp/db.json', JSON.stringify(dbData));
+  fs.writeFileSync('tmp/db.json', JSON.stringify(dbData));
   const result = JSON.parse(fs.readFileSync(dbPath))
   console.log(result.products)
-  res.status(200).json(req.body)
+  res.status(200).json(result)
   //res.status(200).json({url : publicUrl});
   //res.json({ url: `${publicUrl}` });
 })
