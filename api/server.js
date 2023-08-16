@@ -88,7 +88,7 @@ server.post('/api/proxy/products', (req, res) => {
   //dbdataのproductsにreq.bodyを追加する
   dbData.products.push(req.body);
   // db.jsonを更新する
-  fs.writeFileSync('tmp/db.json', JSON.stringify(dbData));
+  fs.writeFileSync('/tmp/db.json', JSON.stringify(dbData));
   res.status(200).json(req.body)
   //res.status(200).json({url : publicUrl});
   //res.json({ url: `${publicUrl}` });
