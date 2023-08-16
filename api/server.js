@@ -73,6 +73,7 @@ server.get('/api/proxy/users/me', (req, res) => {
 /**
  * クライアント /products
  * サーバー　/product
+ * 
  */
 server.post('/api/proxy/product', (req, res) => {
   // db.jsonに新しいProductデータを追加する
