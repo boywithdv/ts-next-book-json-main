@@ -10,6 +10,7 @@ const port = process.env.PORT || 8000;
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { JSON } = require("mysql/lib/protocol/constants/types");
 server.use(cors({
   origin: true,
   credentials: true,
@@ -89,7 +90,7 @@ server.post('/api/proxy/products', (req, res) => {
   dbData.products.push(req.body);
   // db.jsonを更新する
   fs.writeFileSync('/tmp/db.json', JSON.stringify(dbData));
-  const result = path.join("tmp", "db.json");
+  const result = JSON.parse(fs.readFileSync(dbPath))
   console.log(result.products)
   res.status(200).json(req.body)
   //res.status(200).json({url : publicUrl});
