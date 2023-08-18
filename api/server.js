@@ -77,7 +77,7 @@ server.get('/api/proxy/users/me', (req, res) => {
  */
 server.post('/api/proxy/products', (req, res) => {
   // db.jsonに新しいProductデータを追加する
-  const dbPath = path.join("/tmp", "db.json");
+  const dbPath = path.join("tmp", "db.json");
   console.log('this is dbPath : ', dbPath)
   //dbpathのデータを読み込む
   const dbData = JSON.parse(fs.readFileSync(dbPath));
