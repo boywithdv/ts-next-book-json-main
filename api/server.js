@@ -83,7 +83,7 @@ server.post('/api/proxy/products', (req, res) => {
   const dbData = JSON.parse(fs.readFileSync(dbPath));
   //dbdataのproductsにreq.bodyを追加する
   dbData.products.push(req.body);
-  // db.jsonを更新する
+  // db.jsonを更新する//この箇所の書き込みができていない
   fs.writeFileSync(dbPath, JSON.stringify(dbData));
   const result = JSON.parse(fs.readFileSync(dbPath))
   console.log(result.products)
